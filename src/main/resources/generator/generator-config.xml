@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
+        <!-- reduce comment -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- jdbc -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/easy_eat"
+                        userId="root"
+                        password="root">
+            <!-- only generate tables in this schema -->
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <!-- java type -->
+        <javaTypeResolver>
+            <!-- java.math.BigDecimal -->
+            <property name="forceBigDecimals" value="true"/>
+            <!-- java.time.LocalDate, java.time.LocalTime, java.time.LocalDateTime -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <!-- domain -->
+        <javaModelGenerator targetProject="src/main/java"
+                            targetPackage="com.lllebin.domain"/>
+
+        <!-- mapper xml-->
+        <sqlMapGenerator targetProject="src/main/resources"
+                         targetPackage="mapper"/>
+
+        <!-- mapper interface -->
+        <javaClientGenerator targetProject="src/main/java"
+                             targetPackage="com.lllebin.mapper"
+                             type="XMLMAPPER"/>
+
+        <!-- tableName="%" can generate all tables -->
+        <table tableName="%"/>
+    </context>
+</generatorConfiguration>
