@@ -99,12 +99,6 @@ public class EmployeeController {
         // 设置员工信息
         employee.setId(snowflake.nextId());
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
-
         // 插入数据库中
         employeeService.save(employee);
         return CommonResponse.success("新增员工成功");
@@ -135,9 +129,6 @@ public class EmployeeController {
     @PutMapping
     public CommonResponse<String> update(HttpServletRequest request, @RequestBody Employee employee) {
         log.info("更新员工，员工信息：{}", employee);
-
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
         employeeService.updateById(employee);
         return CommonResponse.success("员工修改成功");
     }

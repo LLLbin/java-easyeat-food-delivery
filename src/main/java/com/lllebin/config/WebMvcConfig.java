@@ -1,12 +1,19 @@
 package com.lllebin.config;
 
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.lllebin.utils.JacksonObjectMapper;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
@@ -20,28 +27,26 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurationSupport {
-    /**
-     * 设置静态资源映射（其实手动映射也行，有自动挡）
-     * @param registry
-     */
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        log.info("开始进行静态资源映射...");
-        registry.addResourceHandler("/backend/**")
-                .addResourceLocations("classpath:/static/backend/");
-        registry.addResourceHandler("/front/**")
-                .addResourceLocations("classpath:/static/front/");
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Bean
+    public OpenAPI springOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("EasyEat Food Delivery")
+                        .description("API Interface")
+                        .version("v1")
+                );
     }
 
     @Override
-    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("扩展消息转换器...");
-        // 创建消息转换器对象
-        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-        // 设置底层对象转换器
-        messageConverter.setObjectMapper(new JacksonObjectMapper());
-        // 将该消息转换器对象追加到MVC框架转换器容器中(放第一个优点使用)
-        converters.add(0, messageConverter);
+        for (HttpMessageConverter<?> converter : converters) {
+            if (converter instanceof MappingJackson2HttpMessageConverter jacksonConverter) {
+                jacksonConverter.setObjectMapper(new JacksonObjectMapper());
+            }
+        }
     }
+
 }

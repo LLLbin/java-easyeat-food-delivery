@@ -11,6 +11,7 @@ package com.lllebin.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.lllebin.response.CommonResponse;
+import com.lllebin.utils.BaseContext;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,8 +47,11 @@ public class LoginCheckFilter implements Filter {
         }
 
         // 3. 判断用户是否完成登录
-        if (request.getSession().getAttribute("employee") != null) {
+        Object employeeId = request.getSession().getAttribute("employee");
+        if (employeeId != null) {
             log.info("用户已登录:{}", requestURI);
+            BaseContext.setCurrentId((Long) request.getSession().getAttribute("employee"));
+
             filterChain.doFilter(request, response);
             return;
         }
@@ -62,11 +66,13 @@ public class LoginCheckFilter implements Filter {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "/front/**"
+                "/front/**",
+                "/swagger-ui/**",
+                "/v3/**"
         };
         for (String url : urls) {
             boolean match = PATH_MATCHER.match(url, requestURI);
-            if (match == true) {
+            if (match) {
                 return true;
             }
         }
