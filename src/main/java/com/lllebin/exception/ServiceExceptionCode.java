@@ -14,7 +14,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public enum ServiceExceptionCode {
-    TARGET_ALREADY_EXISTS("target already exists");
+    TARGET_ALREADY_EXISTS("target already exists"),
+    TARGET_NOT_EXISTS("target does not exist");
 
     String description;
 }

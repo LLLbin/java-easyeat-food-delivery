@@ -2,6 +2,8 @@ package com.lllebin.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.lllebin.exception.ServiceException;
+import com.lllebin.exception.ServiceExceptionCode;
 import com.lllebin.response.CommonResponse;
 import com.lllebin.domain.Employee;
 import com.lllebin.response.PageResponse;
@@ -140,4 +142,15 @@ public class EmployeeController {
         return CommonResponse.success("员工修改成功");
     }
 
+    /**
+     * 根据ID查询员工信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public CommonResponse<Employee> getUserById(@PathVariable Long id) {
+        log.info("根据ID查询员工信息：{}", id);
+        Employee employee = employeeService.getUserById(id);
+        return CommonResponse.success(employee);
+    }
 }

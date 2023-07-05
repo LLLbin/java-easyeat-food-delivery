@@ -62,4 +62,13 @@ public class EmployeeService {
     public void updateById(Employee employee) {
         employeeMapper.updateByPrimaryKeySelective(employee);
     }
+
+    public Employee getUserById(Long id) {
+        Employee employee = employeeMapper.selectByPrimaryKey(id);
+        // 用户不存在 -> 抛出异常
+        if (employee == null) {
+            throw new ServiceException(ServiceExceptionCode.TARGET_NOT_EXISTS);
+        }
+        return employee;
+    }
 }
