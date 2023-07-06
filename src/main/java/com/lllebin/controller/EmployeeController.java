@@ -2,10 +2,8 @@ package com.lllebin.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.lllebin.exception.ServiceException;
-import com.lllebin.exception.ServiceExceptionCode;
-import com.lllebin.response.CommonResponse;
 import com.lllebin.domain.Employee;
+import com.lllebin.response.CommonResponse;
 import com.lllebin.response.PageResponse;
 import com.lllebin.service.EmployeeService;
 import com.lllebin.utils.Snowflake;
@@ -15,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,8 +30,6 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @Autowired
-    private Snowflake snowflake;
 
     /**
      * 登录账号
@@ -89,17 +83,12 @@ public class EmployeeController {
 
     /**
      * 新增员工
-     * @param request
      * @param employee
      * @return
      */
     @PostMapping
-    public CommonResponse<String> save(HttpServletRequest request, @RequestBody Employee employee) {
+    public CommonResponse<String> save(@RequestBody Employee employee) {
         log.info("新增员工, 员工信息:{}", employee.toString());
-        // 设置员工信息
-        employee.setId(snowflake.nextId());
-        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        // 插入数据库中
         employeeService.save(employee);
         return CommonResponse.success("新增员工成功");
     }
@@ -113,12 +102,9 @@ public class EmployeeController {
      */
     @GetMapping("/page")
     public CommonResponse<PageResponse<Employee>> page(int page, int pageSize, String name) {
-        log.info("page = {}, pageSize = {}, name = {}", page, pageSize, name);
-        PageHelper.startPage(page, pageSize);
-        List<Employee> employeeList = employeeService.selectByName(name);
-        Page<Employee> p = (Page<Employee>) employeeList;
-
-        return CommonResponse.success(new PageResponse<>(p.getTotal(), p.getResult()));
+        log.info("查询员工信息，page = {}, pageSize = {}, name = {}", page, pageSize, name);
+        PageResponse<Employee> employeePageResponse = employeeService.pageQuery(page, pageSize, name);
+        return CommonResponse.success(employeePageResponse);
     }
 
     /**

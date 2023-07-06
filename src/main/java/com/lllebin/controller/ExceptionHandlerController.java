@@ -23,6 +23,6 @@ public class ExceptionHandlerController {
     @ExceptionHandler(ServiceException.class)
     public CommonResponse<String> exceptionHandler(ServiceException e) {
         log.info(e.getServiceExceptionCode().getDescription());
-        return CommonResponse.error("操作失败");
+        return CommonResponse.error(e.getServiceExceptionCode().getDescription());
     }
 }

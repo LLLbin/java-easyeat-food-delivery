@@ -4,6 +4,7 @@ import com.lllebin.domain.Dish;
 import com.lllebin.domain.DishExample;
 import java.util.List;
 
+import com.lllebin.dto.DishDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 @Mapper
@@ -29,4 +30,6 @@ public interface DishMapper {
     int updateByPrimaryKeySelective(Dish row);
 
     int updateByPrimaryKey(Dish row);
+
+    List<DishDto> pageQuery(String name);
 }

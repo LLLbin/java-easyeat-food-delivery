@@ -37,7 +37,7 @@ public class LoginCheckFilter implements Filter {
         // 1. 获取URL
         String requestURI = request.getRequestURI();
 
-        log.info("拦截到请求:{}", requestURI);
+        // log.info("拦截到请求:{}", requestURI);
 
         // 2. 判断是否放行
         if (isPermitted(requestURI)) {
@@ -50,6 +50,8 @@ public class LoginCheckFilter implements Filter {
         Object employeeId = request.getSession().getAttribute("employee");
         if (employeeId != null) {
             log.info("用户已登录:{}", requestURI);
+
+            // 获取当前用户ID，并保存在ThreadLocal
             BaseContext.setCurrentId((Long) request.getSession().getAttribute("employee"));
 
             filterChain.doFilter(request, response);

@@ -3,8 +3,8 @@
 <mapper namespace="com.lllebin.mapper.SetmealDishMapper">
   <resultMap id="BaseResultMap" type="com.lllebin.domain.SetmealDish">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="setmeal_id" jdbcType="VARCHAR" property="setmealId" />
-    <result column="dish_id" jdbcType="VARCHAR" property="dishId" />
+    <result column="setmeal_id" jdbcType="BIGINT" property="setmealId" />
+    <result column="dish_id" jdbcType="BIGINT" property="dishId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="copies" jdbcType="INTEGER" property="copies" />
@@ -113,7 +113,7 @@
       sort, create_time, update_time, 
       create_user, update_user, is_deleted
       )
-    values (#{id,jdbcType=BIGINT}, #{setmealId,jdbcType=VARCHAR}, #{dishId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{setmealId,jdbcType=BIGINT}, #{dishId,jdbcType=BIGINT}, 
       #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{copies,jdbcType=INTEGER}, 
       #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{createUser,jdbcType=BIGINT}, #{updateUser,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER}
@@ -164,10 +164,10 @@
         #{id,jdbcType=BIGINT},
       </if>
       <if test="setmealId != null">
-        #{setmealId,jdbcType=VARCHAR},
+        #{setmealId,jdbcType=BIGINT},
       </if>
       <if test="dishId != null">
-        #{dishId,jdbcType=VARCHAR},
+        #{dishId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -211,10 +211,10 @@
         id = #{row.id,jdbcType=BIGINT},
       </if>
       <if test="row.setmealId != null">
-        setmeal_id = #{row.setmealId,jdbcType=VARCHAR},
+        setmeal_id = #{row.setmealId,jdbcType=BIGINT},
       </if>
       <if test="row.dishId != null">
-        dish_id = #{row.dishId,jdbcType=VARCHAR},
+        dish_id = #{row.dishId,jdbcType=BIGINT},
       </if>
       <if test="row.name != null">
         `name` = #{row.name,jdbcType=VARCHAR},
@@ -251,8 +251,8 @@
   <update id="updateByExample" parameterType="map">
     update setmeal_dish
     set id = #{row.id,jdbcType=BIGINT},
-      setmeal_id = #{row.setmealId,jdbcType=VARCHAR},
-      dish_id = #{row.dishId,jdbcType=VARCHAR},
+      setmeal_id = #{row.setmealId,jdbcType=BIGINT},
+      dish_id = #{row.dishId,jdbcType=BIGINT},
       `name` = #{row.name,jdbcType=VARCHAR},
       price = #{row.price,jdbcType=DECIMAL},
       copies = #{row.copies,jdbcType=INTEGER},
@@ -270,10 +270,10 @@
     update setmeal_dish
     <set>
       <if test="setmealId != null">
-        setmeal_id = #{setmealId,jdbcType=VARCHAR},
+        setmeal_id = #{setmealId,jdbcType=BIGINT},
       </if>
       <if test="dishId != null">
-        dish_id = #{dishId,jdbcType=VARCHAR},
+        dish_id = #{dishId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
@@ -307,8 +307,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lllebin.domain.SetmealDish">
     update setmeal_dish
-    set setmeal_id = #{setmealId,jdbcType=VARCHAR},
-      dish_id = #{dishId,jdbcType=VARCHAR},
+    set setmeal_id = #{setmealId,jdbcType=BIGINT},
+      dish_id = #{dishId,jdbcType=BIGINT},
       `name` = #{name,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       copies = #{copies,jdbcType=INTEGER},

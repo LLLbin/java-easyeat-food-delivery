@@ -176,62 +176,52 @@ public class SetmealDishExample {
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdEqualTo(String value) {
+        public Criteria andSetmealIdEqualTo(Long value) {
             addCriterion("setmeal_id =", value, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdNotEqualTo(String value) {
+        public Criteria andSetmealIdNotEqualTo(Long value) {
             addCriterion("setmeal_id <>", value, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdGreaterThan(String value) {
+        public Criteria andSetmealIdGreaterThan(Long value) {
             addCriterion("setmeal_id >", value, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdGreaterThanOrEqualTo(String value) {
+        public Criteria andSetmealIdGreaterThanOrEqualTo(Long value) {
             addCriterion("setmeal_id >=", value, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdLessThan(String value) {
+        public Criteria andSetmealIdLessThan(Long value) {
             addCriterion("setmeal_id <", value, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdLessThanOrEqualTo(String value) {
+        public Criteria andSetmealIdLessThanOrEqualTo(Long value) {
             addCriterion("setmeal_id <=", value, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdLike(String value) {
-            addCriterion("setmeal_id like", value, "setmealId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSetmealIdNotLike(String value) {
-            addCriterion("setmeal_id not like", value, "setmealId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSetmealIdIn(List<String> values) {
+        public Criteria andSetmealIdIn(List<Long> values) {
             addCriterion("setmeal_id in", values, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdNotIn(List<String> values) {
+        public Criteria andSetmealIdNotIn(List<Long> values) {
             addCriterion("setmeal_id not in", values, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdBetween(String value1, String value2) {
+        public Criteria andSetmealIdBetween(Long value1, Long value2) {
             addCriterion("setmeal_id between", value1, value2, "setmealId");
             return (Criteria) this;
         }
 
-        public Criteria andSetmealIdNotBetween(String value1, String value2) {
+        public Criteria andSetmealIdNotBetween(Long value1, Long value2) {
             addCriterion("setmeal_id not between", value1, value2, "setmealId");
             return (Criteria) this;
         }
@@ -246,62 +236,52 @@ public class SetmealDishExample {
             return (Criteria) this;
         }
 
-        public Criteria andDishIdEqualTo(String value) {
+        public Criteria andDishIdEqualTo(Long value) {
             addCriterion("dish_id =", value, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdNotEqualTo(String value) {
+        public Criteria andDishIdNotEqualTo(Long value) {
             addCriterion("dish_id <>", value, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdGreaterThan(String value) {
+        public Criteria andDishIdGreaterThan(Long value) {
             addCriterion("dish_id >", value, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdGreaterThanOrEqualTo(String value) {
+        public Criteria andDishIdGreaterThanOrEqualTo(Long value) {
             addCriterion("dish_id >=", value, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdLessThan(String value) {
+        public Criteria andDishIdLessThan(Long value) {
             addCriterion("dish_id <", value, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdLessThanOrEqualTo(String value) {
+        public Criteria andDishIdLessThanOrEqualTo(Long value) {
             addCriterion("dish_id <=", value, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdLike(String value) {
-            addCriterion("dish_id like", value, "dishId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDishIdNotLike(String value) {
-            addCriterion("dish_id not like", value, "dishId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDishIdIn(List<String> values) {
+        public Criteria andDishIdIn(List<Long> values) {
             addCriterion("dish_id in", values, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdNotIn(List<String> values) {
+        public Criteria andDishIdNotIn(List<Long> values) {
             addCriterion("dish_id not in", values, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdBetween(String value1, String value2) {
+        public Criteria andDishIdBetween(Long value1, Long value2) {
             addCriterion("dish_id between", value1, value2, "dishId");
             return (Criteria) this;
         }
 
-        public Criteria andDishIdNotBetween(String value1, String value2) {
+        public Criteria andDishIdNotBetween(Long value1, Long value2) {
             addCriterion("dish_id not between", value1, value2, "dishId");
             return (Criteria) this;
         }

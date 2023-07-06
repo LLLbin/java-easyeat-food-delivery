@@ -234,10 +234,10 @@
                 this.$message.error('批量操作，请先勾选操作菜品！')
                 return false
               }
-              params.ids = this.checkList.join(',')
+              params.id = this.checkList.join(',')
               params.status = row
             } else {
-              params.ids = row.id
+              params.id = row.id
               params.status = row.status ? '0' : '1'
             }
             this.$confirm('确认更改该套餐状态?', '提示', {

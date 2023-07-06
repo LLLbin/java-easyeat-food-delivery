@@ -1,17 +1,19 @@
 package com.lllebin.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.lllebin.domain.Employee;
 import com.lllebin.domain.EmployeeExample;
 import com.lllebin.exception.ServiceException;
 import com.lllebin.exception.ServiceExceptionCode;
 import com.lllebin.mapper.EmployeeMapper;
+import com.lllebin.response.PageResponse;
+import com.lllebin.utils.Snowflake;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.rmi.server.ServerCloneException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +28,11 @@ import java.util.List;
 public class EmployeeService {
 
     @Autowired
+    private Snowflake snowflake;
+
+    @Autowired
     private EmployeeMapper employeeMapper;
+
     public List<Employee> selectByUsername(Employee employee) {
         EmployeeExample employeeExample = new EmployeeExample();
         EmployeeExample.Criteria criteria = employeeExample.createCriteria();
@@ -36,6 +42,10 @@ public class EmployeeService {
     }
 
     public void save(Employee employee) {
+        // 设置员工信息
+        employee.setId(snowflake.nextId());
+        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+
         EmployeeExample employeeExample = new EmployeeExample();
         EmployeeExample.Criteria criteria = employeeExample.createCriteria();
         criteria.andUsernameEqualTo(employee.getUsername());
@@ -49,14 +59,18 @@ public class EmployeeService {
         employeeMapper.insertSelective(employee);
     }
 
-    public List<Employee> selectByName(String name) {
+    public PageResponse<Employee> pageQuery(int page, int pageSize, String name) {
         EmployeeExample employeeExample = new EmployeeExample();
         EmployeeExample.Criteria criteria = employeeExample.createCriteria();
         if (StringUtils.isNotEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         employeeExample.setOrderByClause("name DESC");
-        return employeeMapper.selectByExample(employeeExample);
+
+        PageHelper.startPage(page, pageSize);
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        Page<Employee> p = (Page<Employee>) employeeList;
+        return new PageResponse<>(p.getTotal(), p.getResult());
     }
 
     public void updateById(Employee employee) {

@@ -218,6 +218,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="pageQuery" resultType="com.lllebin.dto.DishDto">
+    select d.*, c.name as categoryName from dish d left outer join category c on d.category_id = c.id
+    <where>
+      <if test="name != null">
+        and d.name like concat("%", #{name},"%")
+      </if>
+    </where>
+    order by d.create_time desc
+  </select>
   <update id="updateByExampleSelective" parameterType="map">
     update dish
     <set>

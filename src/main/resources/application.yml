@@ -13,3 +13,4 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
   mapper-locations: classpath:/mapper/*.xml
+upload-files-path: "E:\\Code\\Java\\easyeat-food-delivery\\upload-files\\"

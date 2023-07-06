@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 public class SetmealDish {
     private Long id;
 
-    private String setmealId;
+    private Long setmealId;
 
-    private String dishId;
+    private Long dishId;
 
     private String name;
 
@@ -36,19 +36,19 @@ public class SetmealDish {
         this.id = id;
     }
 
-    public String getSetmealId() {
+    public Long getSetmealId() {
         return setmealId;
     }
 
-    public void setSetmealId(String setmealId) {
+    public void setSetmealId(Long setmealId) {
         this.setmealId = setmealId;
     }
 
-    public String getDishId() {
+    public Long getDishId() {
         return dishId;
     }
 
-    public void setDishId(String dishId) {
+    public void setDishId(Long dishId) {
         this.dishId = dishId;
     }
 
