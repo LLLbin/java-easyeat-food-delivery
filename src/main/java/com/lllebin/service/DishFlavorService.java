@@ -38,7 +38,7 @@ public class DishFlavorService {
         return dishFlavorMapper.selectByExample(dishFlavorExample);
     }
 
-    public void delete(Long dishId) {
+    public void deleteByDishId(Long dishId) {
         DishFlavorExample dishFlavorExample = new DishFlavorExample();
         DishFlavorExample.Criteria criteria = dishFlavorExample.createCriteria();
         criteria.andDishIdEqualTo(dishId);

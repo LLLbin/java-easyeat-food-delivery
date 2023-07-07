@@ -211,7 +211,16 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <select id="selectPage" resultType="com.lllebin.dto.SetmealDto">
+    select s.*, c.name as categoryName from setmeal as s left outer join category c on s.category_id = c.id
+    <where>
+      <if test="name != null">
+        and s.name like concat("%", #{name},"%")
+      </if>
+    </where>
+    order by s.create_time desc
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update setmeal
     <set>
       <if test="row.id != null">

@@ -8,16 +8,15 @@ import com.lllebin.domain.DishFlavor;
 import com.lllebin.dto.DishDto;
 import com.lllebin.exception.ServiceException;
 import com.lllebin.exception.ServiceExceptionCode;
-import com.lllebin.mapper.DishFlavorMapper;
 import com.lllebin.mapper.DishMapper;
 import com.lllebin.response.PageResponse;
 import com.lllebin.utils.Snowflake;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,9 +69,9 @@ public class DishService {
 
     }
 
-    public PageResponse<DishDto> pageQuery(int page, int pageSize, String name) {
+    public PageResponse<DishDto> getPage(int page, int pageSize, String name) {
         PageHelper.startPage(page, pageSize);
-        Page<DishDto> p = (Page<DishDto>) dishMapper.pageQuery(name);
+        Page<DishDto> p = (Page<DishDto>) dishMapper.selectPage(name);
         return new PageResponse<>(p.getTotal(), p.getResult());
     }
 
@@ -95,7 +94,7 @@ public class DishService {
         dishMapper.updateByPrimaryKey(dish);
 
         // 批量更新菜品口味信息（先删除再重新添加）
-        dishFlavorService.delete(dish.getId());
+        dishFlavorService.deleteByDishId(dish.getId());
         List<DishFlavor> flavors = dishDto.getFlavors();
         if (flavors != null && flavors.size() > 0) {
             for (DishFlavor flavor : flavors) {
@@ -105,22 +104,53 @@ public class DishService {
         }
     }
 
-    public void updateStatus(DishDto dishDto) {
-        Dish dish = new Dish();
-        BeanUtils.copyProperties(dishDto, dish);
-        dishMapper.updateByPrimaryKeySelective(dish);
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void updateStatusById(int status, List<Long> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            Dish dish = new Dish();
+            dish.setStatus(status);
+            ids.forEach((id) -> {
+                dish.setId(id);
+                dishMapper.updateByPrimaryKeySelective(dish);
+            });
+        }
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public void delteById(Long id) {
-        // 如果包含在套餐里面则无法删除
-        if (setmealDishService.countDishId(id) > 0) {
-            throw new ServiceException(ServiceExceptionCode.TARGET_IS_ASSOCITED);
+    public void delteById(List<Long> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            for (Long id : ids) {
+                // 如果包含在套餐里面则无法删除
+                if (setmealDishService.countDishId(id) > 0) {
+                    throw new ServiceException(ServiceExceptionCode.TARGET_IS_ASSOCITED);
+                }
+                // 如果在售出则无法删除
+                DishDto dishDtoById = getDishDtoById(id);
+                if (dishDtoById.getStatus() == 1) {
+                    throw new ServiceException(ServiceExceptionCode.TARGET_IS_SELLING);
+                }
+                // 删除菜品信息
+                dishMapper.deleteByPrimaryKey(id);
+                // 删除菜品口味信息
+                dishFlavorService.deleteByDishId(id);
+            }
         }
+    }
 
-        // 删除菜品信息
-        dishMapper.deleteByPrimaryKey(id);
-        // 删除菜品口味信息
-        dishFlavorService.delete(id);
+    public List<DishDto> getDishDtoByCategoryId(Long categoryId) {
+        DishExample dishExample = new DishExample();
+        DishExample.Criteria criteria = dishExample.createCriteria();
+        criteria.andCategoryIdEqualTo(categoryId);
+        criteria.andStatusEqualTo(1);
+        dishExample.setOrderByClause("sort ASC, update_time DESC");
+        List<Dish> dishList = dishMapper.selectByExample(dishExample);
+
+        List<DishDto> dishDtoList = new ArrayList<>();
+        dishList.forEach((dish) -> {
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(dish, dishDto);
+            dishDtoList.add(dishDto);
+        });
+        return dishDtoList;
     }
 }

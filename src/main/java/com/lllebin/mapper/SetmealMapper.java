@@ -4,6 +4,7 @@ import com.lllebin.domain.Setmeal;
 import com.lllebin.domain.SetmealExample;
 import java.util.List;
 
+import com.lllebin.dto.SetmealDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 @Mapper
@@ -29,4 +30,6 @@ public interface SetmealMapper {
     int updateByPrimaryKeySelective(Setmeal row);
 
     int updateByPrimaryKey(Setmeal row);
+
+    List<SetmealDto> selectPage(String name);
 }

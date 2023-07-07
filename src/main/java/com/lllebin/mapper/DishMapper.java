@@ -31,5 +31,5 @@ public interface DishMapper {
 
     int updateByPrimaryKey(Dish row);
 
-    List<DishDto> pageQuery(String name);
+    List<DishDto> selectPage(String name);
 }

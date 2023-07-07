@@ -16,6 +16,7 @@ import lombok.*;
 public enum ServiceExceptionCode {
     TARGET_ALREADY_EXISTS("target already exists"),
     TARGET_NOT_EXISTS("target does not exist"),
-    TARGET_IS_ASSOCITED("target is associted to others");
+    TARGET_IS_ASSOCITED("target is associted to others"),
+    TARGET_IS_SELLING("target is still selling, cannot be deleted");
     String description;
 }

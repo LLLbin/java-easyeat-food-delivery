@@ -1,6 +1,5 @@
 package com.lllebin.controller;
 
-import com.lllebin.domain.Dish;
 import com.lllebin.dto.DishDto;
 import com.lllebin.response.CommonResponse;
 import com.lllebin.response.PageResponse;
@@ -8,6 +7,8 @@ import com.lllebin.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * ClassName: DishController
@@ -35,7 +36,7 @@ public class DishController {
     @GetMapping("/page")
     public CommonResponse<PageResponse<DishDto>> page(int page, int pageSize, String name) {
         log.info("分页查询菜品， page = {}, pageSize = {}, name = {}", page, pageSize, name);
-        PageResponse<DishDto> dishPageResponse = dishService.pageQuery(page, pageSize, name);
+        PageResponse<DishDto> dishPageResponse = dishService.getPage(page, pageSize, name);
         return CommonResponse.success(dishPageResponse);
     }
 
@@ -46,6 +47,13 @@ public class DishController {
         return CommonResponse.success(dishDto);
     }
 
+    @GetMapping("/list")
+    public CommonResponse<List<DishDto>> getDishDtoByCategoryId(DishDto dishDto) {
+        log.info("根据categoryId查询DishDto， {}", dishDto);
+        List<DishDto> dishDtoList = dishService.getDishDtoByCategoryId(dishDto.getCategoryId());
+        return CommonResponse.success(dishDtoList);
+    }
+
     @PutMapping
     public CommonResponse<String> update(@RequestBody DishDto dishDto) {
         log.info("修改菜品， {}", dishDto);
@@ -54,17 +62,17 @@ public class DishController {
     }
 
 
-    @PutMapping ("/status")
-    public CommonResponse<String> updateStatus(@RequestBody DishDto dishDto) {
-        log.info("修改菜品状态， {}", dishDto);
-        dishService.updateStatus(dishDto);
+    @PutMapping ("/status/{status}")
+    public CommonResponse<String> updateStatus(@PathVariable int status, @RequestParam List<Long> ids) {
+        log.info("修改菜品状态， status = {}, ids = {}", status, ids);
+        dishService.updateStatusById(status, ids);
         return CommonResponse.success("修改菜品状态成功");
     }
 
     @DeleteMapping
-    public CommonResponse<String> deleteById(Long id) {
-        log.info("删除菜品， {}", id);
-        dishService.delteById(id);
+    public CommonResponse<String> deleteById(@RequestParam List<Long> ids) {
+        log.info("删除菜品， {}", ids);
+        dishService.delteById(ids);
         return CommonResponse.success("删除菜品成功");
     }
 
