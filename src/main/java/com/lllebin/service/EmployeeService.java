@@ -8,7 +8,7 @@ import com.lllebin.exception.ServiceException;
 import com.lllebin.exception.ServiceExceptionCode;
 import com.lllebin.mapper.EmployeeMapper;
 import com.lllebin.response.PageResponse;
-import com.lllebin.utils.Snowflake;
+import com.lllebin.utils.SnowflakeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ import java.util.List;
 public class EmployeeService {
 
     @Autowired
-    private Snowflake snowflake;
+    private SnowflakeUtils snowflakeUtils;
 
     @Autowired
     private EmployeeMapper employeeMapper;
@@ -43,7 +43,7 @@ public class EmployeeService {
 
     public void save(Employee employee) {
         // 设置员工信息
-        employee.setId(snowflake.nextId());
+        employee.setId(snowflakeUtils.nextId());
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
 
         EmployeeExample employeeExample = new EmployeeExample();

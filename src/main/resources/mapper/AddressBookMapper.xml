@@ -15,7 +15,7 @@
     <result column="district_name" jdbcType="VARCHAR" property="districtName" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="label" jdbcType="VARCHAR" property="label" />
-    <result column="is_default" jdbcType="BIT" property="isDefault" />
+    <result column="is_default" jdbcType="TINYINT" property="isDefault" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_user" jdbcType="BIGINT" property="createUser" />
@@ -127,7 +127,7 @@
       #{sex,jdbcType=TINYINT}, #{phone,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, 
       #{provinceName,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, 
       #{districtCode,jdbcType=VARCHAR}, #{districtName,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
-      #{label,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{label,jdbcType=VARCHAR}, #{isDefault,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=BIGINT}, #{updateUser,jdbcType=BIGINT}, 
       #{isDeleted,jdbcType=INTEGER})
   </insert>
@@ -233,7 +233,7 @@
         #{label,jdbcType=VARCHAR},
       </if>
       <if test="isDefault != null">
-        #{isDefault,jdbcType=BIT},
+        #{isDefault,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -301,7 +301,7 @@
         `label` = #{row.label,jdbcType=VARCHAR},
       </if>
       <if test="row.isDefault != null">
-        is_default = #{row.isDefault,jdbcType=BIT},
+        is_default = #{row.isDefault,jdbcType=TINYINT},
       </if>
       <if test="row.createTime != null">
         create_time = #{row.createTime,jdbcType=TIMESTAMP},
@@ -338,7 +338,7 @@
       district_name = #{row.districtName,jdbcType=VARCHAR},
       detail = #{row.detail,jdbcType=VARCHAR},
       `label` = #{row.label,jdbcType=VARCHAR},
-      is_default = #{row.isDefault,jdbcType=BIT},
+      is_default = #{row.isDefault,jdbcType=TINYINT},
       create_time = #{row.createTime,jdbcType=TIMESTAMP},
       update_time = #{row.updateTime,jdbcType=TIMESTAMP},
       create_user = #{row.createUser,jdbcType=BIGINT},
@@ -388,7 +388,7 @@
         `label` = #{label,jdbcType=VARCHAR},
       </if>
       <if test="isDefault != null">
-        is_default = #{isDefault,jdbcType=BIT},
+        is_default = #{isDefault,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -422,7 +422,7 @@
       district_name = #{districtName,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       `label` = #{label,jdbcType=VARCHAR},
-      is_default = #{isDefault,jdbcType=BIT},
+      is_default = #{isDefault,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_user = #{createUser,jdbcType=BIGINT},

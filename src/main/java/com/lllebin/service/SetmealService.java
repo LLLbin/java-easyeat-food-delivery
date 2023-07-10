@@ -6,17 +6,15 @@ import com.lllebin.domain.*;
 import com.lllebin.dto.SetmealDto;
 import com.lllebin.exception.ServiceException;
 import com.lllebin.exception.ServiceExceptionCode;
-import com.lllebin.mapper.DishMapper;
-import com.lllebin.mapper.SetmealDishMapper;
 import com.lllebin.mapper.SetmealMapper;
 import com.lllebin.response.PageResponse;
-import com.lllebin.utils.Snowflake;
+import com.lllebin.utils.SnowflakeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +29,7 @@ import java.util.List;
 public class SetmealService {
 
     @Autowired
-    private Snowflake snowflake;
+    private SnowflakeUtils snowflakeUtils;
 
     @Autowired
     private SetmealMapper setmealMapper;
@@ -51,7 +49,7 @@ public class SetmealService {
         // 新增套餐信息
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDto, setmeal);
-        long setmealId = snowflake.nextId();
+        long setmealId = snowflakeUtils.nextId();
         setmeal.setId(setmealId);
         setmealMapper.insertSelective(setmeal);
 
@@ -112,6 +110,23 @@ public class SetmealService {
         return setmealDto;
     }
 
+    public List<SetmealDto> listBySetmealDtoId(Long categoryId) {
+        SetmealExample setmealExample = new SetmealExample();
+        SetmealExample.Criteria criteria = setmealExample.createCriteria();
+        criteria.andCategoryIdEqualTo(categoryId)
+                .andStatusEqualTo(1);
+        setmealExample.setOrderByClause("update_time DESC");
+        List<Setmeal> setmealList = setmealMapper.selectByExample(setmealExample);
+
+        List<SetmealDto> setmealDtoList = new ArrayList<>();
+        setmealList.forEach((setmeal) -> {
+            SetmealDto setmealDto = new SetmealDto();
+            BeanUtils.copyProperties(setmeal, setmealDto);
+            setmealDtoList.add(setmealDto);
+        });
+        return setmealDtoList;
+    }
+
     @Transactional(rollbackFor = RuntimeException.class)
     public void deleteById(List<Long> ids) {
         if (ids != null && !ids.isEmpty()) {
@@ -128,4 +143,6 @@ public class SetmealService {
             }
         }
     }
+
+
 }

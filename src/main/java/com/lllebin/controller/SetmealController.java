@@ -43,9 +43,16 @@ public class SetmealController {
 
     @GetMapping("/{id}")
     public CommonResponse<SetmealDto> getSetmealDtoById(@PathVariable Long id) {
-        log.info("根据Id查询SetmealDto， {}", id);
+        log.info("根据Id查询套餐， {}", id);
         SetmealDto setmealDto = setmealService.getSetmealDtoById(id);
         return CommonResponse.success(setmealDto);
+    }
+
+    @GetMapping("/list")
+    public CommonResponse<List<SetmealDto>> listByCategoryId(SetmealDto setmealDto) {
+        log.info("根据categoryId查询套餐， {}", setmealDto.getCategoryId());
+        List<SetmealDto> setmealDtoList = setmealService.listBySetmealDtoId(setmealDto.getCategoryId());
+        return CommonResponse.success(setmealDtoList);
     }
 
     @PutMapping

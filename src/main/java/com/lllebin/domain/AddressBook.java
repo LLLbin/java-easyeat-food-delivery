@@ -29,7 +29,7 @@ public class AddressBook {
 
     private String label;
 
-    private Boolean isDefault;
+    private Byte isDefault;
 
     private LocalDateTime createTime;
 
@@ -145,11 +145,11 @@ public class AddressBook {
         this.label = label;
     }
 
-    public Boolean getIsDefault() {
+    public Byte getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(Boolean isDefault) {
+    public void setIsDefault(Byte isDefault) {
         this.isDefault = isDefault;
     }
 

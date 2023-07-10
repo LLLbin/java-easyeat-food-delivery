@@ -11,7 +11,7 @@ package com.lllebin.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.lllebin.response.CommonResponse;
-import com.lllebin.utils.BaseContext;
+import com.lllebin.utils.BaseContextUtils;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,13 +46,25 @@ public class LoginCheckFilter implements Filter {
             return;
         }
 
-        // 3. 判断用户是否完成登录
-        Object employeeId = request.getSession().getAttribute("employee");
+        // 3-1. 判断工作人员是否完成登录
+        Long employeeId = (Long) request.getSession().getAttribute("employee");
         if (employeeId != null) {
-            log.info("用户已登录:{}", requestURI);
+            log.info("工作人员已登录:{}, employeeId = {}", requestURI, employeeId);
 
             // 获取当前用户ID，并保存在ThreadLocal
-            BaseContext.setCurrentId((Long) request.getSession().getAttribute("employee"));
+            BaseContextUtils.setCurrentId(employeeId);
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 3-2. 判断用户是否完成登录
+        Long userId = (Long) request.getSession().getAttribute("user");
+        if (userId != null) {
+            log.info("用户已登录:{}, userId = {}", requestURI, userId);
+
+            // 获取当前用户ID，并保存在ThreadLocal
+            BaseContextUtils.setCurrentId(userId);
 
             filterChain.doFilter(request, response);
             return;
@@ -70,7 +82,10 @@ public class LoginCheckFilter implements Filter {
                 "/backend/**",
                 "/front/**",
                 "/swagger-ui/**",
-                "/v3/**"
+                "/v3/**",
+                "/user/sendMsg",
+                "/user/login",
+                "/user/logout"
         };
         for (String url : urls) {
             boolean match = PATH_MATCHER.match(url, requestURI);

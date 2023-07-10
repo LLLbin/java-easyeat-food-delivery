@@ -8,7 +8,7 @@ import com.lllebin.exception.ServiceException;
 import com.lllebin.exception.ServiceExceptionCode;
 import com.lllebin.mapper.CategoryMapper;
 import com.lllebin.response.PageResponse;
-import com.lllebin.utils.Snowflake;
+import com.lllebin.utils.SnowflakeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ import java.util.List;
 public class CategoryService {
 
     @Autowired
-    private Snowflake snowflake;
+    private SnowflakeUtils snowflakeUtils;
 
     @Autowired
     private CategoryMapper categoryMapper;
@@ -39,7 +39,7 @@ public class CategoryService {
 
 
     public void save(Category category) {
-        category.setId(snowflake.nextId());
+        category.setId(snowflakeUtils.nextId());
 
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
@@ -80,7 +80,7 @@ public class CategoryService {
         categoryMapper.updateByPrimaryKeySelective(category);
     }
 
-    public List<Category> list(Category category) {
+    public List<Category> listBytype(Category category) {
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.setOrderByClause("sort ASC, update_time DESC");
 
@@ -91,5 +91,9 @@ public class CategoryService {
         criteria.andTypeEqualTo(category.getType());
 
         return categoryMapper.selectByExample(categoryExample);
+    }
+
+    public List<Category> list() {
+        return categoryMapper.selectByExample(null);
     }
 }

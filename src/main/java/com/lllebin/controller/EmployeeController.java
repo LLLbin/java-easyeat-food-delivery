@@ -1,12 +1,9 @@
 package com.lllebin.controller;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.lllebin.domain.Employee;
 import com.lllebin.response.CommonResponse;
 import com.lllebin.response.PageResponse;
 import com.lllebin.service.EmployeeService;
-import com.lllebin.utils.Snowflake;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

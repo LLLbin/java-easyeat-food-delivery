@@ -2,9 +2,8 @@ package com.lllebin.service;
 
 import com.lllebin.domain.SetmealDish;
 import com.lllebin.domain.SetmealDishExample;
-import com.lllebin.domain.SetmealExample;
 import com.lllebin.mapper.SetmealDishMapper;
-import com.lllebin.utils.Snowflake;
+import com.lllebin.utils.SnowflakeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ import java.util.List;
 public class SetmealDishService {
 
     @Autowired
-    private Snowflake snowflake;
+    private SnowflakeUtils snowflakeUtils;
 
     @Autowired
     private SetmealDishMapper setmealDishMapper;
@@ -36,7 +35,7 @@ public class SetmealDishService {
     }
 
     public void save(SetmealDish setmealDish) {
-        setmealDish.setId(snowflake.nextId());
+        setmealDish.setId(snowflakeUtils.nextId());
         setmealDishMapper.insertSelective(setmealDish);
     }
 

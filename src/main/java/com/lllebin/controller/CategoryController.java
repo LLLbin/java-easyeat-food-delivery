@@ -4,7 +4,6 @@ import com.lllebin.domain.Category;
 import com.lllebin.response.CommonResponse;
 import com.lllebin.response.PageResponse;
 import com.lllebin.service.CategoryService;
-import com.lllebin.utils.Snowflake;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,10 +53,17 @@ public class CategoryController {
         return CommonResponse.success("更新分类完成");
     }
 
-    @GetMapping("/list")
-    public CommonResponse<List<Category>> list(Category category) {
+    @GetMapping("/listByType")
+    public CommonResponse<List<Category>> listByType(Category category) {
         log.info("查询指定类型分类， {}", category.getType());
-        List<Category> categoryList = categoryService.list(category);
+        List<Category> categoryList = categoryService.listBytype(category);
+        return CommonResponse.success(categoryList);
+    }
+
+    @GetMapping("/list")
+    public CommonResponse<List<Category>> list() {
+        log.info("查询所有分类");
+        List<Category> categoryList = categoryService.list();
         return CommonResponse.success(categoryList);
     }
 }

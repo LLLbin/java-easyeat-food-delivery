@@ -48,9 +48,9 @@ public class DishController {
     }
 
     @GetMapping("/list")
-    public CommonResponse<List<DishDto>> getDishDtoByCategoryId(DishDto dishDto) {
+    public CommonResponse<List<DishDto>> listByCategoryId(DishDto dishDto) {
         log.info("根据categoryId查询DishDto， {}", dishDto);
-        List<DishDto> dishDtoList = dishService.getDishDtoByCategoryId(dishDto.getCategoryId());
+        List<DishDto> dishDtoList = dishService.listByCategoryId(dishDto.getCategoryId());
         return CommonResponse.success(dishDtoList);
     }
 

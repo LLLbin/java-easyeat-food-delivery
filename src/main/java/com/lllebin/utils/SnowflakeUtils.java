@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @version : 1.0
  */
 @Component
-public class Snowflake {
+public class SnowflakeUtils {
 
     // TIMESTAMP, DATACENTER(region), MACHINE, SEQUENCE
     private final static long SEQUENCE_BIT = 12;
@@ -31,11 +31,11 @@ public class Snowflake {
 
     private long sequence = 0;
 
-    public Snowflake() {
+    public SnowflakeUtils() {
 
     }
 
-    public Snowflake(long machineId, long datacenterId) {
+    public SnowflakeUtils(long machineId, long datacenterId) {
         if (datacenterId > MAX_DATACENTER_NUM || datacenterId < 0) {
             throw new IllegalArgumentException("Invalid Datacenter ID");
         }

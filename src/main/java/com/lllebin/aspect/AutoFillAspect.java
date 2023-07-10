@@ -1,6 +1,6 @@
 package com.lllebin.aspect;
 
-import com.lllebin.utils.BaseContext;
+import com.lllebin.utils.BaseContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,24 +36,38 @@ public class AutoFillAspect {
         }
         Object entity = args[0];
 
-        // 2.赋值数据
+        // 2.赋值
         LocalDateTime now = LocalDateTime.now();
-        Long currentId = BaseContext.getCurrentId();
+        Long currentId = BaseContextUtils.getCurrentId();
 
-        // 3.赋值
         try {
             Method setCreateTime = entity.getClass().getDeclaredMethod("setCreateTime", LocalDateTime.class);
-            Method setCreateUser = entity.getClass().getDeclaredMethod("setCreateUser", Long.class);
-            Method setUpdateTime = entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class);
-            Method setUpdateUser = entity.getClass().getDeclaredMethod("setUpdateUser", Long.class);
-
             setCreateTime.invoke(entity, now);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Method setCreateUser = entity.getClass().getDeclaredMethod("setCreateUser", Long.class);
             setCreateUser.invoke(entity, currentId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Method setUpdateTime = entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class);
             setUpdateTime.invoke(entity, now);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Method setUpdateUser = entity.getClass().getDeclaredMethod("setUpdateUser", Long.class);
             setUpdateUser.invoke(entity, currentId);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         log.info("INSERT公共字段填充完毕：{}", entity);
     }
 
@@ -73,14 +87,18 @@ public class AutoFillAspect {
 
         // 2.赋值数据
         LocalDateTime now = LocalDateTime.now();
-        Long currentId = BaseContext.getCurrentId();
+        Long currentId = BaseContextUtils.getCurrentId();
 
         // 3.赋值
         try {
             Method setUpdateTime = entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class);
-            Method setUpdateUser = entity.getClass().getDeclaredMethod("setUpdateUser", Long.class);
-
             setUpdateTime.invoke(entity, now);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Method setUpdateUser = entity.getClass().getDeclaredMethod("setUpdateUser", Long.class);
             setUpdateUser.invoke(entity, currentId);
         } catch (Exception e) {
             e.printStackTrace();

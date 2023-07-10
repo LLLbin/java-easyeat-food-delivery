@@ -10,7 +10,7 @@ import com.lllebin.exception.ServiceException;
 import com.lllebin.exception.ServiceExceptionCode;
 import com.lllebin.mapper.DishMapper;
 import com.lllebin.response.PageResponse;
-import com.lllebin.utils.Snowflake;
+import com.lllebin.utils.SnowflakeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ import java.util.List;
 public class DishService {
 
     @Autowired
-    private Snowflake snowflake;
+    private SnowflakeUtils snowflakeUtils;
 
     @Autowired
     private DishMapper dishMapper;
@@ -54,7 +54,7 @@ public class DishService {
         // 新增菜品信息
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDto, dish);
-        long dishId = snowflake.nextId();
+        long dishId = snowflakeUtils.nextId();
         dish.setId(dishId);
         dishMapper.insertSelective(dish);
 
@@ -137,7 +137,7 @@ public class DishService {
         }
     }
 
-    public List<DishDto> getDishDtoByCategoryId(Long categoryId) {
+    public List<DishDto> listByCategoryId(Long categoryId) {
         DishExample dishExample = new DishExample();
         DishExample.Criteria criteria = dishExample.createCriteria();
         criteria.andCategoryIdEqualTo(categoryId);
@@ -149,6 +149,8 @@ public class DishService {
         dishList.forEach((dish) -> {
             DishDto dishDto = new DishDto();
             BeanUtils.copyProperties(dish, dishDto);
+            List<DishFlavor> dishFlavorList = dishFlavorService.getDishFlavorByDishId(dish.getId());
+            dishDto.setFlavors(dishFlavorList);
             dishDtoList.add(dishDto);
         });
         return dishDtoList;

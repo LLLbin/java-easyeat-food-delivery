@@ -3,7 +3,7 @@ package com.lllebin.service;
 import com.lllebin.domain.DishFlavor;
 import com.lllebin.domain.DishFlavorExample;
 import com.lllebin.mapper.DishFlavorMapper;
-import com.lllebin.utils.Snowflake;
+import com.lllebin.utils.SnowflakeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +21,13 @@ import java.util.List;
 public class DishFlavorService {
 
     @Autowired
-    private Snowflake snowflake;
+    private SnowflakeUtils snowflakeUtils;
 
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
 
     public void save(DishFlavor flavor) {
-        flavor.setId(snowflake.nextId());
+        flavor.setId(snowflakeUtils.nextId());
         dishFlavorMapper.insertSelective(flavor);
     }
 

@@ -8,7 +8,7 @@ package com.lllebin.utils;
  * @author : Lebin Zhou
  * @version : 1.0
  */
-public class BaseContext {
+public class BaseContextUtils {
     private static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
 
     public static void setCurrentId(Long id) {

@@ -50,6 +50,6 @@
                              type="XMLMAPPER"/>
 
         <!-- tableName="%" can generate all tables -->
-        <table tableName="%"/>
+        <table tableName="address_book"/>
     </context>
 </generatorConfiguration>
