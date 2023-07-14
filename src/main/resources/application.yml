@@ -8,6 +8,14 @@ spring:
     url: jdbc:mysql://localhost:3306/easy_eat
     username: root
     password: root
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+  cache:
+    redis:
+      time-to-live: 1800000 # 设置有效期
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,12 +1,16 @@
 package com.lllebin.controller;
 
+import com.lllebin.domain.Setmeal;
 import com.lllebin.dto.DishDto;
 import com.lllebin.dto.SetmealDto;
 import com.lllebin.response.CommonResponse;
 import com.lllebin.response.PageResponse;
 import com.lllebin.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +32,7 @@ public class SetmealController {
     private SetmealService setmealService;
 
     @PostMapping
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public CommonResponse<String> save(@RequestBody SetmealDto setmealDto) {
         log.info("新增套餐， {}", setmealDto);
         setmealService.save(setmealDto);
@@ -49,6 +54,7 @@ public class SetmealController {
     }
 
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache", key = "#setmealDto.categoryId + '_' + #setmealDto.status")
     public CommonResponse<List<SetmealDto>> listByCategoryId(SetmealDto setmealDto) {
         log.info("根据categoryId查询套餐， {}", setmealDto.getCategoryId());
         List<SetmealDto> setmealDtoList = setmealService.listBySetmealDtoId(setmealDto.getCategoryId());
@@ -56,6 +62,7 @@ public class SetmealController {
     }
 
     @PutMapping
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public CommonResponse<String> update(@RequestBody SetmealDto setmealDto) {
         log.info("修改套餐， {}", setmealDto);
         setmealService.update(setmealDto);
@@ -63,6 +70,7 @@ public class SetmealController {
     }
 
     @PutMapping("/status/{status}")
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public CommonResponse<String> updateStatus(@PathVariable int status, @RequestParam List<Long> ids) {
         log.info("修改套餐状态， status = {}, ids = {}", status, ids);
         setmealService.updateStatusById(status, ids);
@@ -70,6 +78,7 @@ public class SetmealController {
     }
 
     @DeleteMapping
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public CommonResponse<String> deleteById(@RequestParam List<Long> ids) {
         log.info("删除菜品， {}", ids);
         setmealService.deleteById(ids);

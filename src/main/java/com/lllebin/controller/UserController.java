@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ClassName: UserController
@@ -34,6 +36,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @PostMapping("/sendMsg")
     public CommonResponse<String> sengMsg(@RequestBody User user, HttpServletRequest httpServletRequest) {
@@ -52,8 +57,11 @@ public class UserController {
         // SMSUtils.sendMessage("EasyEat", "", phone, code);
 
         // 4. 存储验证码到session
-        HttpSession session = httpServletRequest.getSession();
-        session.setAttribute(phone, code);
+        // HttpSession session = httpServletRequest.getSession();
+        // session.setAttribute(phone, code);
+
+        // 4. pro 存储验证码到Redis，并设置有效期为5分钟
+        redisTemplate.opsForValue().set(phone, code, 5, TimeUnit.MINUTES);
 
         // 5. 把验证码返回浏览器用于回显（偷懒行为）
         return CommonResponse.success(code);
@@ -68,7 +76,10 @@ public class UserController {
         String code = map.get("code").toString();
 
         // 2. 从session获取验证码
-        String codeInSession = (String) request.getSession().getAttribute(phone);
+        // String codeInSession = (String) request.getSession().getAttribute(phone);
+
+        // 2. pro 从Redis获取验证码
+        String codeInSession = (String) redisTemplate.opsForValue().get(phone);
 
         // 3. 校验验证码
         if (codeInSession == null || !codeInSession.equals(code)) {
@@ -79,7 +90,8 @@ public class UserController {
         List<User> userList = userService.getUserByPhone(phone);
         request.getSession().setAttribute("user", userList.get(0).getId());
 
-        // 5. 返回用户信息
+        // 5. 登陆成功，返回用户信息
+        redisTemplate.delete(phone);
         return CommonResponse.success(userList.get(0));
     }
 

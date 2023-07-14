@@ -6,6 +6,8 @@ import com.lllebin.response.PageResponse;
 import com.lllebin.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class DishController {
     private DishService dishService;
 
     @PostMapping
+    @CacheEvict(value = "dishCache", allEntries = true)
     public CommonResponse<String> save(@RequestBody DishDto dishDto) {
         log.info("新增菜品， {}", dishDto);
         dishService.save(dishDto);
@@ -48,6 +51,7 @@ public class DishController {
     }
 
     @GetMapping("/list")
+    @Cacheable(value = "dishCache", key = "#dishDto.categoryId + '_' + #dishDto.status")
     public CommonResponse<List<DishDto>> listByCategoryId(DishDto dishDto) {
         log.info("根据categoryId查询DishDto， {}", dishDto);
         List<DishDto> dishDtoList = dishService.listByCategoryId(dishDto.getCategoryId());
@@ -55,6 +59,7 @@ public class DishController {
     }
 
     @PutMapping
+    @CacheEvict(value = "dishCache", allEntries = true)
     public CommonResponse<String> update(@RequestBody DishDto dishDto) {
         log.info("修改菜品， {}", dishDto);
         dishService.update(dishDto);
@@ -63,6 +68,7 @@ public class DishController {
 
 
     @PutMapping ("/status/{status}")
+    @CacheEvict(value = "dishCache", allEntries = true)
     public CommonResponse<String> updateStatus(@PathVariable int status, @RequestParam List<Long> ids) {
         log.info("修改菜品状态， status = {}, ids = {}", status, ids);
         dishService.updateStatusById(status, ids);
@@ -70,6 +76,7 @@ public class DishController {
     }
 
     @DeleteMapping
+    @CacheEvict(value = "dishCache", allEntries = true)
     public CommonResponse<String> deleteById(@RequestParam List<Long> ids) {
         log.info("删除菜品， {}", ids);
         dishService.delteById(ids);

@@ -1,8 +1,9 @@
 package com.lllebin.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DishFlavor {
+public class DishFlavor implements Serializable {
     private Long id;
 
     private Long dishId;

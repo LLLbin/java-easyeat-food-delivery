@@ -2,6 +2,7 @@ package com.lllebin.response;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import java.util.Map;
  * @version : 1.0
  */
 @Data
-public class CommonResponse<T> {
+public class CommonResponse<T> implements Serializable{
     //编码：1成功，0和其它数字为失败
     private Integer code;
     //错误信息

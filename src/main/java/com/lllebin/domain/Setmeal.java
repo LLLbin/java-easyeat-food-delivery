@@ -1,9 +1,13 @@
 package com.lllebin.domain;
 
+import lombok.Data;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Setmeal {
+@Data
+public class Setmeal implements Serializable {
     private Long id;
 
     private Long categoryId;

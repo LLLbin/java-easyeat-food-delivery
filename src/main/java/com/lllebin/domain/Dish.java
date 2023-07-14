@@ -1,9 +1,10 @@
 package com.lllebin.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Dish {
+public class Dish implements Serializable {
     private Long id;
 
     private String name;
